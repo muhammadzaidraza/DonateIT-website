@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <!-- LINKING BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    <!-- Linking  Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+    <script src="firebase.js"></script>
+    <script src="authstatechanged.js"></script>
+
+    <style>
+        .about_us_middle_text {
+            font-size: 200%;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="min-width: 200px;">
+            <img src="./pic/donation_logo.png" width="40" height="40" alt="" class="ml-4">
+            <span style="color: rgb(0, 119, 184) ; font-family:'Patua One', cursive; font-size: 130%; ">donate IT</span>
+        </a>
+        <ul class="nav nav-tabs justify-content-center mr-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about_us.html">About Us</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="donation.html">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact_us.html">Contact us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="signout();" href="#">sign out</a>
+            </li>
+        </ul>
+    </nav>
+    <!--Welcome text-->
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-sm-12  about_us_middle_text   mt-5 mb-5">Need Your Funds</div>
+        </div>
+    </div>
+    <div class="container" id="mainContainer">
+
+    </div>
+</body>
+
+<script>
+    //SINGING OUT THE CURRENT USER
+    function signout() {
+        firebase.auth().signOut().then(function () {
+            // SIGN OUT SUCCESSFULL
+            window.location.replace("main_page.html")
+            console.log("sucessfuly signed out");
+        }).catch(function (error) {
+            //ERROR IN SIGN OUT
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("errorMessage")
+        });
+    }
+
+    // GETTING THE DATA FROM THE DATABASE
+    const db = firebase.firestore();
+    // GETTING THE DATA ON THE HTML PAGE
+    db.collection('incident').onSnapshot((snapshot) => {
+        let changes = snapshot.docChanges();
+        changes.forEach(change => {
+            if (change.type == 'added')
+                renderIncident(change.doc);
+        });
+    });
+
+    function renderIncident(doc) {
+        let mainContainer = document.getElementById("mainContainer");
+        // CREATING ELEMENTS TAG
+        let jumbotron = document.createElement('div');
+        let title = document.createElement('h1');
+        let detail = document.createElement('p');
+        let line = document.createElement('hr');
+        let date = document.createElement('small');
+        // let accountNoCell = document.createElement('td');
+        // let amountCell = document.createElement('td');
+        // let dateCell = document.createElement('td');
+        //SETTING THE BOOTSTRAP CLASSES
+        jumbotron.setAttribute("class", "jumbotron");
+        detail.setAttribute("class", "lead");
+        line.setAttribute("class", "my-4");
+        // STTING THE ELEMENTS TEXT
+        title.textContent = doc.data().title;
+        detail.textContent = doc.data().detail;
+        date.textContent = doc.data().date;
+        // APPENDING THE ELEMENT TAGS
+        jumbotron.appendChild(title);
+        jumbotron.appendChild(detail);
+        jumbotron.appendChild(line);
+        jumbotron.appendChild(date);
+        mainContainer.appendChild(jumbotron);
+    }
+</script>
+
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Donations</title>
+    <!-- LINKING BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    <!-- Linking Firebase -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+    <script src="firebase.js"></script>
+    <script src="authstatechanged.js"></script>
+
+    <!-- LINKING MATERIALIZE -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <style>
+        .about_us_middle_text {
+            font-size: 200%;
+            font-weight: bold;
+        }
+
+        th,
+        td {
+            text-align: center;
+        }
+
+        tr:hover {
+            background-color: gainsboro;
+        }
+    </style>
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="navbar navbar-light bg-light ">
+        <a class="navbar-brand" href="#" style="min-width: 200px;">
+            <img src="./pic/donation_logo.png" width="40" height="40" alt="" class="ml-4">
+            <span style="color: rgb(0, 119, 184) ; font-family:'Patua One', cursive; font-size: 130%; ">donate IT</span>
+        </a>
+        <ul class="nav nav-tabs justify-content-center mr-3">
+            <li class="nav-item">
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about_us.html">About Us</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact_us.html">Contact us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="signout();" href="#">sign out</a>
+            </li>
+        </ul>
+    </nav>
+    <!--Welcome text-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 d-sm-flex justify-content-center about_us_middle_text mx-auto mt-5">Donations</div>
+        </div>
+        <div class="container-fluid ">
+            <label>
+                <button type="button" class="btn btn-lg btn-light mb-2" data-toggle="modal"
+                    data-target="#userinfomodal">
+                    Donate <img src="./pic/add.jpg" width="20px" height="20px">
+                </button>
+            </label>
+        </div>
+    </div>
+
+    <!-- REPRESENTING RECORDS IN TABLES -->
+    <div class="container-fluid table-responsive-sm " data-spy="scroll" data-target="" data-offset="0">
+        <table class="table  table-hover  table-striped" id="table">
+            <tr style="background-color: transparent !important" class="active">
+                <th scope="col">Full Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Address</th>
+                <th scope="col">Account No</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+            </tr>
+        </table>
+    </div>
+
+    <!-- GETTING USER INFO MODAL-->
+    <div class="modal fade" id="userinfomodal" tabindex="-1" role="dialog" aria-labelledby="userinfoTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userinfoTitle">User Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="userinfoform" action="JavaScript:void(0)" onsubmit="validation();">
+                        <div class="form-group">
+                            <!-- user name -->
+                            <input type="text" class="form-control" name="name_name" id="Fullname"
+                                placeholder="Full Name" autocomplete="off">
+                            <small class="text-danger" id="nameError"></small>
+                        </div>
+                        <!-- phone number -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="number_name" id="number"
+                                placeholder="Phone Number" autocomplete="off">
+                            <small class="text-danger" id="numberError"></small>
+                        </div>
+                        <!-- address -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="address_name" id="address"
+                                placeholder="Address" autocomplete="off">
+                            <small class="text-danger" id="addressError"></small>
+                        </div>
+                        <!-- account no -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="account_no_name" id="Account_no"
+                                placeholder="Account No" autocomplete="off">
+                            <small class="text-danger" id="accountNoError"></small>
+                        </div>
+                        <!-- amount -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="amount_name" id="Amount" placeholder="Amount"
+                                autocomplete="off">
+                            <small class="text-danger" id="amountError"></small>
+                        </div>
+                        <!-- <button>send</button> -->
+                        <button class="btn btn-primary col d-flex justify-content-center" name="submit"> Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //signing out the current user
+        function signout() {
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful
+                window.location.replace("main_page.html")
+                console.log("sucessfuly signed out");
+            }).catch(function (error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("errorMessage")
+            });
+        }
+
+        // Getting the data from the Database
+        const db = firebase.firestore();
+        const table = document.getElementById("table");
+
+        // Getting data on HTML page
+        db.collection('donation').onSnapshot((snapshot) => {
+            let changes = snapshot.docChanges();
+            changes.forEach(change => {
+                if (change.type == 'added')
+                    renderRecord(change.doc);
+            });
+        });
+
+        function renderRecord(doc) {
+            // creating tags
+            let row = document.createElement('tr');
+            let nameCell = document.createElement('td');
+            let emailCell = document.createElement('td');
+            let numberCell = document.createElement('td');
+            let addressCell = document.createElement('td');
+            let accountNoCell = document.createElement('td');
+            let amountCell = document.createElement('td');
+            let dateCell = document.createElement('td');
+            // Setting thier innerHTML
+            nameCell.textContent = doc.data().name;
+            emailCell.textContent = doc.data().email;
+            numberCell.textContent = doc.data().number;
+            addressCell.textContent = doc.data().address;
+            accountNoCell.textContent = doc.data().acc_no;
+            amountCell.textContent = doc.data().amount;
+            dateCell.textContent = doc.data().date;
+            // setting thier attribute to scope="col"
+            row.setAttribute("data_id", doc.id);
+            row.setAttribute('scope', "table-row");
+            nameCell.setAttribute('scope', "col");
+            emailCell.setAttribute('scope', "col");
+            numberCell.setAttribute('scope', "col");
+            addressCell.setAttribute('scope', "col");
+            accountNoCell.setAttribute('scope', "col");
+            amountCell.setAttribute('scope', "col");
+            dateCell.setAttribute('scope', "col");
+            // Appending the tags
+            row.appendChild(nameCell);
+            row.appendChild(emailCell);
+            row.appendChild(numberCell);
+            row.appendChild(addressCell);
+            row.appendChild(accountNoCell);
+            row.appendChild(amountCell);
+            row.appendChild(dateCell);
+            table.appendChild(row);
+        }
+        //FORM VALIDAtiON FUNCTION 
+        function validation() {
+            var flag = 0, outerFlag = 0;                   //flag=0 means therE is no error in the form
+            //getting values of all inputs
+            let nameValue = document.getElementById("Fullname").value;
+            let numberValue = document.getElementById("number").value;
+            let addressValue = document.getElementById("address").value;
+            let accountNoValue = document.getElementById("Account_no").value;
+            let amountValue = document.getElementById("Amount").value;
+            //calling all validation function
+            outerFlag = userName(nameValue);
+            outerFlag = phoneNumber(numberValue);
+            outerFlag = address(addressValue);
+            outerFlag = accountNo(accountNoValue);
+            outerFlag = amount(amountValue);
+            console.log(outerFlag);
+            // user name validation
+            function userName(nameValue) {
+                if (nameValue === "") {
+                    document.getElementById("nameError").innerHTML = "Please enter the user name";
+                    console.log("Please enter the user name");
+                    flag = 1;
+                }
+                else if (nameValue.length <= 2) {
+                    document.getElementById("nameError").innerHTML = "User name must be of atleast 3 characters";
+                    console.log("User name must be of atleast 3 characters");
+                    flag = 1;
+                }
+                else {
+                    document.getElementById("nameError").innerHTML = "";
+                }
+                return flag;
+            }
+            //Phone number Verification
+            function phoneNumber(numberValue) {
+                if (numberValue == "") {
+                    document.getElementById("numberError").innerHTML = "Please enter the Phone number";
+                    console.log("Please enter the Phone number");
+                    flag = 1;
+                }
+                else if (isNaN(numberValue)) {
+                    document.getElementById("numberError").innerHTML = "Only number digits are allowed";
+                    console.log("characters other than numbers are no allowed");
+                    flag = 1;
+                }
+                else if (numberValue.length != 11) {
+                    document.getElementById("numberError").innerHTML = "Please enter 11 digit number";
+                    console.log("Please enter 11 digit number");
+                    flag = 1;
+                }
+
+                else if (numberValue.indexOf('0') !== 0 || numberValue.indexOf('3') !== 1) {
+                    document.getElementById("numberError").innerHTML = "The first two digits must be 03";
+                    console.log("");
+                    flag = 1;
+                }
+                else {
+                    document.getElementById("numberError").innerHTML = "";
+                }
+                return flag;
+            }
+            //address Verification
+            function address(addressValue) {
+                if (addressValue == "") {
+                    document.getElementById("addressError").innerHTML = "Please enter the Address";
+                    console.log("Please enter the address");
+                    flag = 1;
+                }
+                else {
+                    document.getElementById("addressError").innerHTML = "";
+                }
+                return flag;
+            }
+            //account No Verification
+            function accountNo(accountNoValue) {
+                if (accountNoValue == "") {
+                    document.getElementById("accountNoError").innerHTML = "Please enter the Account No";
+                    console.log("Please enter the account no");
+                    flag = 1;
+                }
+                else if (isNaN(accountNoValue)) {
+                    document.getElementById("accountNoError").innerHTML = "Only number digits are allowed";
+                    console.log("characters other than numbers are not allowed");
+                    flag = 1;
+                }
+                else if ((accountNoValue.length <= 12) || (accountNoValue.length >= 20)) {
+                    document.getElementById("accountNoError").innerHTML = "Characters should be between 12-20";
+                    console.log("Characters between should be between 12-20");
+                    flag = 1;
+                }
+                else {
+                    document.getElementById("accountNoError").innerHTML = "";
+                }
+                return flag;
+            }
+            //amount Verification
+            function amount(amountValue) {
+                if (amountValue == "") {
+                    document.getElementById("amountError").innerHTML = "Please enter the amount";
+                    console.log("Please enter the amount");
+                    flag = 1;
+                }
+                else if (isNaN(amountValue)) {
+                    document.getElementById("amountError").innerHTML = "Only number digits are allowed";
+                    console.log("characters other than numbers are not allowed");
+                    flag = 1;
+                }
+                else if (amountValue == 0) {
+                    document.getElementById("amountError").innerHTML = "Zero amount i not allowed";
+                    console.log("characters other than numbers are not allowed");
+                    flag = 1;
+                }
+                else {
+                    document.getElementById("amountError").innerHTML = "";
+                }
+                return flag;
+            }
+            if (outerFlag == 0) {
+                //Saving Data
+                const userForm = document.getElementById('userinfoform');
+                // getting the current date
+                function gettingDate() {
+                    let d = new Date();
+                    let currentDay = d.getDate();
+                    let currentMonth = d.getMonth();
+                    currentMonth = currentMonth + 1;
+                    let currentYear = d.getFullYear();
+                    return `${currentDay}-${currentMonth}-${currentYear}`
+                }
+                // setting the value into the firestore
+                db.collection('donation').add({
+                    name: userForm.name_name.value,
+                    email: localStorage.getItem("signinEmail"),
+                    number: userForm.number_name.value,
+                    address: userForm.address_name.value,
+                    acc_no: userForm.account_no_name.value,
+                    amount: userForm.amount_name.value,
+                    date: gettingDate()
+                });
+                //after setting the value make the input value null
+                userForm.name_name.value = "";
+                userForm.number_name.value = "";
+                userForm.address_name.value = "";
+                userForm.account_no_name.value = "";
+                userForm.amount_name.value = "";
+                //to close the modal
+                $('#userinfomodal').modal('toggle');
+            }
+        }
+    </script>
+</body>
+
+
+</html>

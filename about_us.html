@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>About Us</title>
+    <!-- LINKING BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    <!-- Linking  Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+    <script src="firebase.js"></script>
+    <script src="authstatechanged.js"></script>
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="min-width: 200px;">
+            <img src="./pic/donation_logo.png" width="40" height="40" alt="" class="ml-4">
+            <span style="color: rgb(0, 119, 184) ; font-family:'Patua One', cursive; font-size: 130%; ">donate IT</span>
+        </a>
+        <ul class="nav nav-tabs justify-content-center mr-3">
+            <li class="nav-item">
+                <a class="nav-link " href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">About Us</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="donation.html">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contact_us.html">Contact us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="signout();" href="#">sign out</a>
+        </ul>
+    </nav>
+
+    <!-- carousel -->
+    <div id="carouselExampleFade" class="carousel slide " data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/1.jpg" class="d-block w-100" height="380px">
+            </div>
+            <div class="carousel-item" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/2.jpg" class="d-block w-100" height="380px">
+            </div>
+            <div class="carousel-item" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/3.jpg" class="d-block w-100" height="380px;">
+            </div>
+            <div class="carousel-item" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/4.jpg" class="d-block w-100" height="380px;">
+            </div>
+            <div class="carousel-item" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/5.jpg" class="d-block w-100" height="380px;">
+            </div>
+            <div class="carousel-item" data-interval="2000" style="max-height: 380px">
+                <img src="./pic/6.jpg" class="d-block w-100" height="380px;">
+            </div>
+        </div>
+    </div>
+    <!-- About Us -->
+    <div class="card container mt-2 w-100">
+        <div class="card-body">
+            <h5 class="card-title">About Us</h5>
+            <p class="card-text">In most of the countries specially pakistan when a certain group of people
+                face an incident. The family of the victims loses thier earning source whiich leads to thier bad
+                financial condition. We as a responsible citizen of this country feels that their should be a platform
+                where any one across the country want to help the family of victims can donate money to us . We will
+                distribute the money amoung those victims famalies. We ensure you that we will give your donated amount
+                to the victims famalies.
+            </p>
+        </div>
+    </div>
+    <script>
+        //signing out the current user
+        function signout() {
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful
+                window.location.replace("main_page.html")
+                console.log("sucessfuly signed out");
+            }).catch(function (error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("errorMessage")
+            });
+        }
+        // appling Carousal functionality using javascript
+        $('.carousel').carousel({
+            interval: 1500
+        })
+        document.getElementById("carouselExampleFade").setAttribute("class", "carousel-fade");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home </title>
+
+    <!-- LINKING BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+
+    <!--FRONT PAGE HEADING WRITING-->
+    <link href="https://fonts.googleapis.com/css?family=Patua+One&display=swap" rel="stylesheet">
+
+    <!-- Linking  Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script> -->
+    <script src="firebase.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .front_page {
+            /*setting front page image*/
+            background-image: url("./pic/10.png");
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .from_page_bottom_text {
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 11%;
+            font-weight: bold;
+        }
+
+        .from_page_bottom_text2 {
+            font-weight: bold;
+            max-width: 800px;
+        }
+
+        .form_container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .form_container input[type=text] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .form_container input[type=text]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
+
+        .form_container .btn:hover,
+        .open_form_button:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!--FRONT PAGE CONTAINER-->
+    <div class="container_fluid front_page">
+        <!--TOP ROW CONTAINER  HEADING-->
+        <div class="container-fluid ">
+            <div class="row ">
+                <div class="col-sm-1 d-flex justify-content-start"> <img src="./pic/donation_logo.png " width="85px"
+                        height="85px"></div>
+                <div class="col-sm-11 d-flex justify-content-start">
+                    <h1 style="color: rgb(0, 119, 184) ; font-family:'Patua One', cursive; font-size: 500%; ">donate IT
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <!-- FRONT PAGE MIDDLE PARAGRAPH TEXT CONTAINER-->
+        <div class="container ">
+            <div class="row" style="padding-top: 20px">
+                <div class="col-sm-12 from_page_bottom_text d-sm-flex justify-content-center ">
+                    <p style="font-size: 180%">help to save someone's life</p>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 20px">
+                <div class="col-sm-12 from_page_bottom_text2 mx-auto">
+                    <p>A donation is a gift for charity, humanitarian aid, or to benefit a cause. A donation may take
+                        various forms, including money, alms, services, or goods such as clothing, toys, food, or
+                        vehicles. A donation may satisfy medical needs
+                        such as blood or organs for transplant.</p>
+                </div>
+            </div>
+        </div>
+
+        <!--Get started button by which the form icon will pop up-->
+        <div class="container mx-auto">
+            <div class="row">
+                <button type="button" class="btn btn-primary btn-lg mx-auto" data-toggle="modal"
+                    data-target="#signinForm" style="margin: 20px 0px 0px 600px;" class="open_form_button">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--Form Modal-->
+    <div class="modal fade" id="signinForm" tabindex="-1" role="dialog" aria-labelledby="signinFormTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signinFormTitle">Join us</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!--Main Signin Form-->
+                    <form class="container form_container" id="form">
+                        <div class="form-row">
+                            <div class="col">
+                                <input type="email" class="form-control" placeholder="Email Address" name="form_email"
+                                    id="email">
+                            </div>
+                        </div>
+                        <div class="form-row mt-1">
+                            <div class="col ">
+                                <input type="password" class="form-control" placeholder="password" name="form_pass"
+                                    id="pass" aria-describedby="passwordHelp">
+                                <small id="passwordHelp" class="form-text text-muted text-danger"></small>
+                            </div>
+                        </div>
+                        <div class="form-row mt-1">
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-block"
+                                    onclick="signinform();">Signin</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-block" onclick="signupform();">Signup
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //SIGNUP FUUNCTION
+        function signupform() {
+            let auth = firebase.auth();
+            // GETTING EMAIL AND PASSWORD VALUE
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("pass").value;
+            auth.createUserWithEmailAndPassword(email, password).then(function () {
+                $('#signinForm').modal('toggle');          //FOR CLOSING MODAL
+                window.location.replace("home.html");
+                localStorage.setItem("signinEmail", email);
+            }).catch(function (error) {
+                // HANDLING ERROR HERE 
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                document.getElementById("form").form_email.value = "";
+                document.getElementById("form").form_pass.value = "";
+                let smallPass = document.getElementById("passwordHelp");
+                smallPass.textContent = errorMessage;
+                smallPass.setAttribute("class", "text-danger");
+            });
+        }
+        // SIGNIN FUNCTION
+        function signinform() {
+            let auth = firebase.auth();
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("pass").value;
+            auth.signInWithEmailAndPassword(email, password).then(function () {
+                $('#signinForm').modal('toggle');
+                localStorage.setItem("signinEmail", email);
+                window.location.replace("home.html");
+            }).catch(function (error) {
+                // Handle Errors here.  
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                document.getElementById("form").form_email.value = "";
+                document.getElementById("form").form_pass.value = "";
+                let smallPass = document.getElementById("passwordHelp");
+                smallPass.textContent = errorMessage;
+                smallPass.setAttribute("class", "text-danger");
+            });
+        }
+    </script>
+</body>
+
+</html>

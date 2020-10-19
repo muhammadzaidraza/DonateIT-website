@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact Us</title>
+    <!--Linking materialize-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- LINKING BOOTSTRAP-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+        </script>
+    <!-- Linking Firebase -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-auth.js"></script>
+    <script src="firebase.js"></script>
+    <script src="authstatechanged.js"></script>
+
+    <style>
+        .about_us_middle_text {
+            font-size: 200%;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        div.card:hover {
+            background-color: rgb(248, 249, 250);
+        }
+    </style>
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="min-width: 200px;">
+            <img src="./pic/donation_logo.png" width="40" height="40" alt="" class="ml-4">
+            <span style="color: rgb(0, 119, 184) ; font-family:'Patua One', cursive; font-size: 130%; ">donate IT</span>
+        </a>
+        <ul class="nav nav-tabs justify-content-center mr-3">
+            <li class="nav-item">
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about_us.html">About Us</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="donation.html">Donate</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="contact_us.html">Contact us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="signout();" href="#" onclick="signout();">sign out</a>
+            </li>
+        </ul>
+    </nav>
+    <!--Welcome text-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2 about_us_middle_text mx-auto mt-5 mb-5">Get In Touch</div>
+        </div>
+    </div>
+    <!--Cards-->
+    <div class="container">
+        <!--Phone-->
+        <div class="card-group">
+            <div class="card text-center">
+                <div class="card-body ">
+                    <h5 class="card-title">Phone</h5>
+                    <p class="card-text"><i class="large material-icons">phone</i></p>
+                    <p class="card-text">0311-1234567</p>
+
+                </div>
+            </div>
+            <!--Email-->
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Email</h5>
+                    <p class="card-text"> <i class="large material-icons">mail</i></p>
+                    <p class="card-text">Getinfo@gmail.com</p>
+
+                </div>
+            </div>
+            <!-- ADDRESS -->
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Address</h5>
+                    <p class="card-text"><i class="large material-icons">location_on</i></p>
+                    <p class="card-text">Block-B Federal-B Area</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complain Form -->
+    <div class="container mt-5">
+        <div class="container">
+            <form id="messageform" action="JavaScript:void(0)" onsubmit="complainFormValidation();">
+                <div class="form-row mt-3">
+                    <div class="col">
+                        <input type="text" class="form-control" name="name" placeholder="User Name" id="name_id">
+                        <small class="text-danger" id="userNameError"></small>
+                    </div>
+                </div>
+                <div class="form-row mt-3">
+                    <div class="col">
+                        <textarea class="form-control" id="" rows="3" name="message" placeholder="Message"
+                            id="message_id"></textarea>
+                        <small class="text-danger" id="messageError"></small>
+                    </div>
+                </div>
+                <div class="form-row mt-3">
+                    <div class="col d-flex justify-content-center">
+                        <button type="submit" name="submit" class="btn btn-primary">Send Message </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        //signing out the current user
+        function signout() {
+            firebase.auth().signOut().then(function () {
+                // Sign-out successful
+                window.location.replace("main_page.html")
+                console.log("sucessfuly signed out");
+            }).catch(function (error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log("errorMessage")
+            });
+        }
+        // FORM VALIDATION FUNCTION
+        function complainFormValidation() {
+            // getting form
+            const form = document.getElementById("messageform");
+            //setting the flag values
+            let complainFlag = 0, complainOuterFlag = 0;
+            let userNameValue = document.getElementById("name_id").value;
+            console.log(userNameValue);
+            let messageValue = form.message.value;
+            console.log(messageValue);
+            //calling both name and message validation function
+            complainOuterFlag = userNameValidation(userNameValue);
+            complainOuterFlag = messageValidation(messageValue);
+            console.log(complainOuterFlag);
+            //user name validation function
+            function userNameValidation(userNameValue) {
+                if (userNameValue === "") {
+                    document.getElementById("userNameError").innerHTML = "Please enter the user name";
+                    console.log("Please enter the user name");
+                    complainFlag = 1;
+                }
+                else if (userNameValue.length <= 2) {
+                    document.getElementById("userNameError").innerHTML = "User name must be of atleast 3 characters";
+                    console.log("User name must be of atleast 3 characters");
+                    complainFlag = 1;
+                }
+                else {
+                    document.getElementById("userNameError").innerHTML = "";
+                }
+                return complainFlag;
+            }
+            // message validation function
+            function messageValidation(messageValue) {
+                if (messageValue === "") {
+                    document.getElementById("messageError").innerHTML = "Please enter the user name";
+                    console.log("Please enter the user name");
+                    complainFlag = 1;
+                }
+                else {
+                    document.getElementById("messageError").innerHTML = "";
+                }
+                return complainFlag;
+            }
+            if (complainOuterFlag == 0) {
+                const db = firebase.firestore();
+                db.collection('complain').add({
+                    name: form.name.value,
+                    email: localStorage.getItem("signinEmail"),
+                    message: form.message.value
+                });
+                form.name.value = "";
+                form.message.value = "";
+            }
+        }
+    </script>
+</body>
+
+</html>
